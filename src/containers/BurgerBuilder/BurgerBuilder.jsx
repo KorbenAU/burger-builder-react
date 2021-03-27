@@ -29,6 +29,15 @@ class BurgerBuilder extends Component {
     loading: false,
   };
 
+  componentDidMount() {
+    axios
+      .get('/ingredients.json')
+      .then((res) => {
+        this.setState({ ingredients: res.data });
+      })
+      .catch((error) => {});
+  }
+
   updatePurchaseState(ingredients) {
     const sum = Object.keys(ingredients)
       .map((igKey) => {
@@ -88,11 +97,9 @@ class BurgerBuilder extends Component {
     axios
       .post('/orders.json', order)
       .then((res) => {
-        console.log(res);
         this.setState({ loading: false, purchasing: false });
       })
       .catch((error) => {
-        console.log(error);
         this.setState({ loading: false, purchasing: false });
       });
   };
@@ -105,27 +112,21 @@ class BurgerBuilder extends Component {
       disabledInfo[key] = disabledInfo[key] <= 0;
     }
 
-    var orderSummary = (
+    var orderSummary = this.state.ingredients ? (
       <OrderSummary
         ingredients={this.state.ingredients}
         price={this.state.totalPrice}
         purchaseCancelled={this.purchaseCancelHandler}
         purchaseContinued={this.purchaseContinueHandler}
       />
-    );
+    ) : null;
 
     if (this.state.loading) {
       orderSummary = <Spinner />;
     }
 
-    return (
-      <div className={classes.Container}>
-        <Modal
-          show={this.state.purchasing}
-          modalClosed={this.purchaseCancelHandler}
-        >
-          {orderSummary}
-        </Modal>
+    let burgerAndController = this.state.ingredients ? (
+      <>
         <Burger ingredients={this.state.ingredients} />
         <BuildController
           ingredientAdded={this.addIngredientHandler}
@@ -135,6 +136,20 @@ class BurgerBuilder extends Component {
           ordered={this.purchaseHandler}
           price={this.state.totalPrice}
         />
+      </>
+    ) : (
+      <Spinner />
+    );
+
+    return (
+      <div className={classes.Container}>
+        <Modal
+          show={this.state.purchasing}
+          modalClosed={this.purchaseCancelHandler}
+        >
+          {orderSummary}
+        </Modal>
+        {burgerAndController}
       </div>
     );
   }
