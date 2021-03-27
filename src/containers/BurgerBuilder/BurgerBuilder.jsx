@@ -3,6 +3,7 @@ import BuildController from '../../components/Burger/BuildController/BuildContro
 import Burger from '../../components/Burger/Burger';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Modal from '../../components/UI/Modal/Modal';
+import classes from './BurgerBuilder.module.css';
 
 const INGREDIENT_PRICES = {
   salad: 0.5,
@@ -87,7 +88,7 @@ class BurgerBuilder extends Component {
     }
 
     return (
-      <>
+      <div className={classes.Container}>
         <Modal
           show={this.state.purchasing}
           modalClosed={this.purchaseCancelHandler}
@@ -108,7 +109,7 @@ class BurgerBuilder extends Component {
           ordered={this.purchaseHandler}
           price={this.state.totalPrice}
         />
-      </>
+      </div>
     );
   }
 }
