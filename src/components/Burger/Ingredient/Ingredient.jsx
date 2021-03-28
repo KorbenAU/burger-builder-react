@@ -30,6 +30,9 @@ export class Ingredient extends Component {
       case 'salad':
         ingredient = <div className={classes.Salad}></div>;
         break;
+      case 'tomato':
+        ingredient = <div className={classes.Tomato}></div>;
+        break;
       default:
         ingredient = null;
     }

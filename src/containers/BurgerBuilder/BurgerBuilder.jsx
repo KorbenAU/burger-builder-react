@@ -13,16 +13,12 @@ const INGREDIENT_PRICES = {
   cheese: 0.4,
   meat: 1.3,
   bacon: 0.7,
+  tomato: 0.3,
 };
 
 class BurgerBuilder extends Component {
   state = {
-    ingredients: {
-      salad: 0,
-      bacon: 0,
-      cheese: 0,
-      meat: 0,
-    },
+    ingredients: null,
     totalPrice: 4,
     purchasable: false,
     purchasing: false,
@@ -31,7 +27,7 @@ class BurgerBuilder extends Component {
 
   componentDidMount() {
     axios
-      .get('/ingredients')
+      .get('/ingredients.json')
       .then((res) => {
         this.setState({ ingredients: res.data });
       })
@@ -105,6 +101,7 @@ class BurgerBuilder extends Component {
   };
 
   render() {
+    console.log(this.state.ingredients);
     const disabledInfo = {
       ...this.state.ingredients,
     };
